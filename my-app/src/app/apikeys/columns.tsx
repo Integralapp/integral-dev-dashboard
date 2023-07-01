@@ -23,6 +23,8 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 
 import { EditKeyDialog } from "@/components/custom/edit-key-dialog";
 
+const TRUNCATED_KEY_CHAR_COUNT = 4;
+
 export const columns: ColumnDef<ApiKey>[] = [
   {
     accessorKey: "name",
@@ -33,6 +35,11 @@ export const columns: ColumnDef<ApiKey>[] = [
     header: "Key",
     cell: ({ row }) => {
       const key = row.getValue("key") as string;
+      const truncatedKey =
+        key.substring(0, TRUNCATED_KEY_CHAR_COUNT) +
+        "..." +
+        key.slice(TRUNCATED_KEY_CHAR_COUNT * -1);
+
       return (
         <TooltipProvider>
           <Tooltip>
@@ -41,7 +48,7 @@ export const columns: ColumnDef<ApiKey>[] = [
                 navigator.clipboard.writeText(key);
               }}
             >
-              {key}
+              {truncatedKey}
             </TooltipTrigger>
             <TooltipContent>
               <p>Click to copy</p>
