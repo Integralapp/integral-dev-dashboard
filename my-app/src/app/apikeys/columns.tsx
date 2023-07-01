@@ -13,6 +13,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export const columns: ColumnDef<ApiKey>[] = [
   {
@@ -20,8 +26,27 @@ export const columns: ColumnDef<ApiKey>[] = [
     header: "Name",
   },
   {
-    accessorKey: "token",
-    header: "Token",
+    accessorKey: "key",
+    header: "Key",
+    cell: ({ row }) => {
+      const key = row.getValue("key") as string;
+      return (
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger
+              onClick={() => {
+                navigator.clipboard.writeText(key);
+              }}
+            >
+              {key}
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Click to copy</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      );
+    },
   },
   {
     accessorKey: "lastUsed",

@@ -9,7 +9,7 @@ import {
 export type ApiKey = {
   id: string;
   name: string;
-  token: string;
+  key: string;
   lastUsed: string;
   createdAt: string;
 };

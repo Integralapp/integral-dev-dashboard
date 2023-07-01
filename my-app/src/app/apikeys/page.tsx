@@ -8,14 +8,14 @@ async function getData(): Promise<ApiKey[]> {
     {
       id: "728ed52f",
       name: "first",
-      token: "wjdnmwkemdkwemd",
+      key: "app-wdjmek32k4m2kdmk3dm2k3",
       lastUsed: "-",
       createdAt: "Feb 22, 2022",
     },
     {
       id: "489e1d42",
       name: "second",
-      token: "wikmdkifero",
+      key: "app-kwem23kmfowiemdokwemjd",
       lastUsed: "-",
       createdAt: "Feb 22, 2022",
     },
