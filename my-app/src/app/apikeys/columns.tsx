@@ -19,6 +19,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+
+import { EditKeyDialog } from "@/components/custom/edit-key-dialog";
 
 export const columns: ColumnDef<ApiKey>[] = [
   {
@@ -62,21 +65,26 @@ export const columns: ColumnDef<ApiKey>[] = [
       // const apiKey = row.original;
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Edit key</DropdownMenuItem>
-            <DropdownMenuItem>Rotate key</DropdownMenuItem>
-            <DropdownMenuItem>Delete key</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <Dialog>
+          <EditKeyDialog />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DialogTrigger asChild>
+                <DropdownMenuItem>Edit key</DropdownMenuItem>
+              </DialogTrigger>
+              <DropdownMenuItem>Rotate key</DropdownMenuItem>
+              <DropdownMenuItem>Delete key</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </Dialog>
       );
     },
   },
