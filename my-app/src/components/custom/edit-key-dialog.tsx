@@ -1,3 +1,4 @@
+import { ApiKey } from "@/app/page";
 import { Button } from "@/components/ui/button";
 import {
   DialogContent,
@@ -8,8 +9,15 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useState } from "react";
 
-export function EditKeyDialog() {
+type Props = {
+  apiKey: ApiKey;
+};
+
+export function EditKeyDialog({ apiKey }: Props) {
+  const [name, setName] = useState<string>(apiKey.name);
+
   return (
     <DialogContent className="sm:max-w-[425px]">
       <DialogHeader>
@@ -20,10 +28,13 @@ export function EditKeyDialog() {
       </DialogHeader>
       <div className="grid gap-4 py-4">
         <div className="grid grid-cols-4 items-center gap-4">
-          <Label htmlFor="name" className="text-right">
-            Name
-          </Label>
-          <Input id="name" value="Service key" className="col-span-3" />
+          <Label htmlFor="name">Name</Label>
+          <Input
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="col-span-3"
+          />
         </div>
       </div>
       <DialogFooter>

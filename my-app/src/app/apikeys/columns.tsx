@@ -69,11 +69,11 @@ export const columns: ColumnDef<ApiKey>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      // const apiKey = row.original;
+      const apiKey = row.original;
 
       return (
         <Dialog>
-          <EditKeyDialog />
+          <EditKeyDialog apiKey={apiKey} />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-8 w-8 p-0">
