@@ -1,6 +1,7 @@
 import { ApiKey } from "@/app/page";
 import { Button } from "@/components/ui/button";
 import {
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -38,7 +39,9 @@ export function EditKeyDialog({ apiKey }: Props) {
         </div>
       </div>
       <DialogFooter>
-        <Button type="submit">Save changes</Button>
+        <DialogClose asChild>
+          <Button type="submit">Save changes</Button>
+        </DialogClose>
       </DialogFooter>
     </DialogContent>
   );
