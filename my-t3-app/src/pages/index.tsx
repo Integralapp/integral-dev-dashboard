@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Main from "~/@/components/main";
+import { Toaster } from "~/@/components/ui/toaster";
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
       </Head>
       <main>
         <Main />
+        <Toaster />
       </main>
     </>
   );
