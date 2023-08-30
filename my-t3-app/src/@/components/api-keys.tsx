@@ -7,8 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
-import { MoreHorizontal } from "lucide-react";
-import { Button } from "./ui/button";
+import { ApiKeyMoreActions } from "./api-key-more-actions";
 
 const TRUNCATED_KEY_CHAR_COUNT = 4;
 
@@ -45,9 +44,7 @@ export default function ApiKeys() {
               <TableCell>{apiKey.lastUsed}</TableCell>
               <TableCell>{apiKey.createdAt}</TableCell>
               <TableCell className="text-right">
-                <Button variant="outline" size="icon">
-                  <MoreHorizontal className="h-4 w-4" />
-                </Button>
+                <ApiKeyMoreActions apiKey={apiKey} />
               </TableCell>
             </TableRow>
           );

@@ -2,12 +2,12 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import axios from "axios";
 
-type ApiKey = {
+export type ApiKey = {
   id: string;
   createdAt: string;
   lastUsed: string;
   apiKey: string;
-  name?: string;
+  name: string;
 };
 
 export const exampleRouter = createTRPCRouter({
