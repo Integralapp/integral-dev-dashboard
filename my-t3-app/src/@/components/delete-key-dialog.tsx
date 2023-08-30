@@ -13,7 +13,7 @@ type Props = {
   apiKey: ApiKey;
 };
 
-export function DeleteKeyDialog({ apiKey }: Props) {
+export function DeleteKeyDialog({ apiKey: _apiKey }: Props) {
   return (
     <DialogContent className="sm:max-w-[425px]">
       <DialogHeader>
