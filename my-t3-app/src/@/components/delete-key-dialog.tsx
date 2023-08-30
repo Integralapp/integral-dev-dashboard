@@ -1,4 +1,3 @@
-import { Button } from "@chakra-ui/react";
 import type { ApiKey } from "~/server/api/routers/example";
 import {
   DialogHeader,
@@ -8,6 +7,7 @@ import {
   DialogDescription,
 } from "./ui/dialog";
 import { DialogClose } from "@radix-ui/react-dialog";
+import { Button } from "./ui/button";
 
 type Props = {
   apiKey: ApiKey;
@@ -26,7 +26,9 @@ export function DeleteKeyDialog({ apiKey }: Props) {
         <DialogClose asChild>
           <Button variant="secondary">Cancel</Button>
         </DialogClose>
-        <Button type="submit">Confirm delete</Button>
+        <Button type="submit" variant="destructive">
+          Confirm delete
+        </Button>
       </DialogFooter>
     </DialogContent>
   );

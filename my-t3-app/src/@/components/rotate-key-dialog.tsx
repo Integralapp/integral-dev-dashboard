@@ -6,10 +6,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "./ui/dialog";
-import { Button } from "@chakra-ui/react";
 import type { ApiKey } from "~/server/api/routers/example";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
+import { Button } from "./ui/button";
 
 type Props = {
   apiKey: ApiKey;
