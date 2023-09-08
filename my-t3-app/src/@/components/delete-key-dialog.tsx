@@ -1,4 +1,4 @@
-import type { ApiKey } from "~/server/api/routers/example";
+import type { ApiKeyType } from "~/server/api/routers/example";
 import {
   DialogHeader,
   DialogFooter,
@@ -10,7 +10,7 @@ import { DialogClose } from "@radix-ui/react-dialog";
 import { Button } from "./ui/button";
 
 type Props = {
-  apiKey: ApiKey;
+  apiKey: ApiKeyType;
 };
 
 export function DeleteKeyDialog({ apiKey: _apiKey }: Props) {

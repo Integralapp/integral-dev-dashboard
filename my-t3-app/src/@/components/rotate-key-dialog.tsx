@@ -6,17 +6,17 @@ import {
   DialogHeader,
   DialogTitle,
 } from "./ui/dialog";
-import type { ApiKey } from "~/server/api/routers/example";
+import type { ApiKeyType } from "~/server/api/routers/example";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
 
 type Props = {
-  apiKey: ApiKey;
+  apiKey: ApiKeyType;
 };
 
 export function RotateKeyDialog({ apiKey }: Props) {
-  const [name, setName] = useState<string>(apiKey.name);
+  const [name, setName] = useState<string>(apiKey.name ?? "");
 
   return (
     <DialogContent className="sm:max-w-[425px]">

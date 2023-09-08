@@ -97,9 +97,9 @@ export default function ApiKeys({ token, applicationId }: Props) {
       {apiKeys.data && apiKeys.data.length === 0 && (
         <div className="flex-col justify-center p-8 text-center">
           <div className="grow flex-row">
-            <p className="text-sm font-bold">No Api Keys</p>
+            <p className="text-sm font-bold">No API Keys</p>
             <p className="text-sm text-muted-foreground">
-              Add Api Keys to see them here!
+              Add API Keys to see them here!
             </p>
           </div>
         </div>

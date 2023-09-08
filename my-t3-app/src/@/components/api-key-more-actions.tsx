@@ -10,7 +10,7 @@ import {
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { MoreHorizontal } from "lucide-react";
-import type { ApiKey } from "~/server/api/routers/example";
+import type { ApiKeyType } from "~/server/api/routers/example";
 import { EditKeyDialog } from "./edit-key-dialog";
 import { DeleteKeyDialog } from "./delete-key-dialog";
 import { RotateKeyDialog } from "./rotate-key-dialog";
@@ -22,7 +22,7 @@ enum ApiKeyRowDropdownType {
 }
 
 type Props = {
-  apiKey: ApiKey;
+  apiKey: ApiKeyType;
 };
 
 export function ApiKeyMoreActions({ apiKey }: Props) {
@@ -74,7 +74,7 @@ export function ApiKeyMoreActions({ apiKey }: Props) {
 
 function getDialogComponent(
   apiKeyRowDropdownType: ApiKeyRowDropdownType,
-  apiKey: ApiKey
+  apiKey: ApiKeyType
 ) {
   switch (apiKeyRowDropdownType) {
     case ApiKeyRowDropdownType.Edit:

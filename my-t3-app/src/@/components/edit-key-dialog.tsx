@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { ApiKey } from "~/server/api/routers/example";
+import type { ApiKeyType } from "~/server/api/routers/example";
 import {
   DialogContent,
   DialogDescription,
@@ -13,11 +13,11 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 
 type Props = {
-  apiKey: ApiKey;
+  apiKey: ApiKeyType;
 };
 
 export function EditKeyDialog({ apiKey }: Props) {
-  const [name, setName] = useState<string>(apiKey.name);
+  const [name, setName] = useState<string>(apiKey.name ?? "");
 
   return (
     <DialogContent className="sm:max-w-[425px]">
