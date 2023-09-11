@@ -86,7 +86,11 @@ export default function ApiKeys({ token, applicationId }: Props) {
                 <TableCell>{apiKey.lastUsed}</TableCell>
                 <TableCell>{apiKey.createdAt}</TableCell>
                 <TableCell className="text-right">
-                  <ApiKeyMoreActions apiKey={apiKey} />
+                  <ApiKeyMoreActions
+                    apiKey={apiKey}
+                    token={token}
+                    applicationId={applicationId}
+                  />
                 </TableCell>
               </TableRow>
             );

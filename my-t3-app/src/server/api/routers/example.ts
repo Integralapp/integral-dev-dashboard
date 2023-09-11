@@ -55,4 +55,29 @@ export const exampleRouter = createTRPCRouter({
 
       return response.data as ApiKeyType;
     }),
+  deleteApiKey: publicProcedure
+    .input(
+      z.object({
+        token: z.string(),
+        applicationId: z.string(),
+        apiKey: z.string(),
+      })
+    )
+    .output(ApiKeySchema)
+    .mutation(async ({ input: { token, applicationId, apiKey } }) => {
+      const response = await axios.delete(
+        "http://localhost:4000/dashboard/keys/delete",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Integral-Application-Id": applicationId,
+          },
+          data: {
+            apiKey,
+          },
+        }
+      );
+
+      return response.data as ApiKeyType;
+    }),
 });

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Dialog, DialogTrigger } from "./ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +15,7 @@ import { DeleteKeyDialog } from "./delete-key-dialog";
 import { RotateKeyDialog } from "./rotate-key-dialog";
 
 enum ApiKeyRowDropdownType {
+  None,
   Edit,
   Rotate,
   Delete,
@@ -23,17 +23,46 @@ enum ApiKeyRowDropdownType {
 
 type Props = {
   apiKey: ApiKeyType;
+  token: string;
+  applicationId: string;
 };
 
-export function ApiKeyMoreActions({ apiKey }: Props) {
+export function ApiKeyMoreActions({ apiKey, token, applicationId }: Props) {
   const [dialogType, setDialogType] = useState<ApiKeyRowDropdownType>(
-    ApiKeyRowDropdownType.Edit
+    ApiKeyRowDropdownType.None
   );
 
   return (
-    <Dialog>
-      {getDialogComponent(dialogType, apiKey)}
-
+    <>
+      <EditKeyDialog
+        isOpen={dialogType === ApiKeyRowDropdownType.Edit}
+        apiKey={apiKey}
+        setIsEditKeyDialogOpen={(isOpen: boolean) => {
+          setDialogType(
+            isOpen ? ApiKeyRowDropdownType.Edit : ApiKeyRowDropdownType.None
+          );
+        }}
+      />
+      <DeleteKeyDialog
+        isOpen={dialogType === ApiKeyRowDropdownType.Delete}
+        apiKey={apiKey}
+        token={token}
+        applicationId={applicationId}
+        setIsDeleteKeyDialogOpen={(isOpen: boolean) => {
+          setDialogType(
+            isOpen ? ApiKeyRowDropdownType.Delete : ApiKeyRowDropdownType.None
+          );
+        }}
+      />
+      <RotateKeyDialog
+        isOpen={dialogType === ApiKeyRowDropdownType.Rotate}
+        apiKey={apiKey}
+        setIsRotateKeyDialogOpen={(isOpen: boolean) => {
+          setDialogType(
+            isOpen ? ApiKeyRowDropdownType.Rotate : ApiKeyRowDropdownType.None
+          );
+        }}
+      />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
@@ -44,44 +73,23 @@ export function ApiKeyMoreActions({ apiKey }: Props) {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DialogTrigger asChild>
-            <DropdownMenuItem
-              onClick={() => setDialogType(ApiKeyRowDropdownType.Edit)}
-            >
-              Edit key
-            </DropdownMenuItem>
-          </DialogTrigger>
-          <DialogTrigger asChild>
-            <DropdownMenuItem
-              onClick={() => setDialogType(ApiKeyRowDropdownType.Rotate)}
-            >
-              Rotate key
-            </DropdownMenuItem>
-          </DialogTrigger>
-
-          <DialogTrigger asChild>
-            <DropdownMenuItem
-              onClick={() => setDialogType(ApiKeyRowDropdownType.Delete)}
-            >
-              Delete key
-            </DropdownMenuItem>
-          </DialogTrigger>
+          <DropdownMenuItem
+            onClick={() => setDialogType(ApiKeyRowDropdownType.Edit)}
+          >
+            Edit key
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => setDialogType(ApiKeyRowDropdownType.Rotate)}
+          >
+            Rotate key
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => setDialogType(ApiKeyRowDropdownType.Delete)}
+          >
+            Delete key
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-    </Dialog>
+    </>
   );
-}
-
-function getDialogComponent(
-  apiKeyRowDropdownType: ApiKeyRowDropdownType,
-  apiKey: ApiKeyType
-) {
-  switch (apiKeyRowDropdownType) {
-    case ApiKeyRowDropdownType.Edit:
-      return <EditKeyDialog apiKey={apiKey} />;
-    case ApiKeyRowDropdownType.Delete:
-      return <DeleteKeyDialog apiKey={apiKey} />;
-    case ApiKeyRowDropdownType.Rotate:
-      return <RotateKeyDialog apiKey={apiKey} />;
-  }
 }

@@ -8,7 +8,6 @@ import {
   CardDescription,
   CardContent,
 } from "./ui/card";
-import { Dialog } from "./ui/dialog";
 import { AddKeyDialog } from "./add-key-dialog";
 import { useState } from "react";
 
@@ -29,16 +28,15 @@ export default function Main() {
               These keys will allow you to authenticate API requests.
             </CardDescription>
           </div>
-          <Dialog open={isAddKeyDialogOpen}>
-            <Button onClick={() => setIsAddKeyDialogOpen(true)}>
-              <Plus className="mr-2 h-4 w-4" /> Add API Key
-            </Button>
-            <AddKeyDialog
-              token={TOKEN}
-              applicationId={APPLICATION_ID}
-              setIsAddKeyDialogOpen={setIsAddKeyDialogOpen}
-            />
-          </Dialog>
+          <Button onClick={() => setIsAddKeyDialogOpen(true)}>
+            <Plus className="mr-2 h-4 w-4" /> Add API Key
+          </Button>
+          <AddKeyDialog
+            token={TOKEN}
+            applicationId={APPLICATION_ID}
+            setIsAddKeyDialogOpen={setIsAddKeyDialogOpen}
+            isOpen={isAddKeyDialogOpen}
+          />
         </CardHeader>
         <CardContent>
           <ApiKeys applicationId={APPLICATION_ID} token={TOKEN} />
