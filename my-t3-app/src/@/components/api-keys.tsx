@@ -15,6 +15,7 @@ import {
   TooltipTrigger,
 } from "./ui/tooltip";
 import { useToast } from "./ui/use-toast";
+import { ApiKeyNameCell } from "./api-key-name-cell";
 
 const TRUNCATED_KEY_CHAR_COUNT = 4;
 
@@ -52,7 +53,12 @@ export default function ApiKeys({ token, applicationId }: Props) {
 
             return (
               <TableRow key={apiKey.id}>
-                <TableCell className="font-medium">{apiKey.name}</TableCell>
+                <TableCell>
+                  <ApiKeyNameCell
+                    name={apiKey.name}
+                    expiresIn={apiKey.expiresIn}
+                  />
+                </TableCell>
                 <TableCell>
                   <TooltipProvider>
                     <Tooltip>
@@ -90,6 +96,7 @@ export default function ApiKeys({ token, applicationId }: Props) {
                     apiKey={apiKey}
                     token={token}
                     applicationId={applicationId}
+                    isApiKeyExpiring={apiKey.expiresIn != null}
                   />
                 </TableCell>
               </TableRow>

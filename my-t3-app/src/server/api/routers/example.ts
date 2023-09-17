@@ -1,13 +1,15 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import axios from "axios";
+import { ExpiresInTimes } from "~/@/components/rotate-key-dialog";
 
 export const ApiKeySchema = z.object({
   id: z.string(),
   createdAt: z.string(),
   lastUsed: z.string(),
   apiKey: z.string(),
-  name: z.nullable(z.string()),
+  name: z.string(),
+  expiresIn: z.nullable(z.string()),
 });
 
 export type ApiKeyType = z.infer<typeof ApiKeySchema>;
@@ -80,4 +82,33 @@ export const exampleRouter = createTRPCRouter({
 
       return response.data as ApiKeyType;
     }),
+  rotateApiKey: publicProcedure
+    .input(
+      z.object({
+        token: z.string(),
+        applicationId: z.string(),
+        apiKey: z.string(),
+        expiresIn: z.nativeEnum(ExpiresInTimes),
+      })
+    )
+    .output(ApiKeySchema)
+    .mutation(
+      async ({ input: { token, applicationId, apiKey, expiresIn } }) => {
+        const response = await axios.post(
+          "http://localhost:4000/dashboard/keys/rotate",
+          {
+            apiKey,
+            expiresIn,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Integral-Application-Id": applicationId,
+            },
+          }
+        );
+
+        return response.data as ApiKeyType;
+      }
+    ),
 });

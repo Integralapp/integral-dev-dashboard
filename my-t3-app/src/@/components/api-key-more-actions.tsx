@@ -25,9 +25,15 @@ type Props = {
   apiKey: ApiKeyType;
   token: string;
   applicationId: string;
+  isApiKeyExpiring?: boolean;
 };
 
-export function ApiKeyMoreActions({ apiKey, token, applicationId }: Props) {
+export function ApiKeyMoreActions({
+  apiKey,
+  token,
+  applicationId,
+  isApiKeyExpiring = false,
+}: Props) {
   const [dialogType, setDialogType] = useState<ApiKeyRowDropdownType>(
     ApiKeyRowDropdownType.None
   );
@@ -57,6 +63,8 @@ export function ApiKeyMoreActions({ apiKey, token, applicationId }: Props) {
       <RotateKeyDialog
         isOpen={dialogType === ApiKeyRowDropdownType.Rotate}
         apiKey={apiKey}
+        token={token}
+        applicationId={applicationId}
         setIsRotateKeyDialogOpen={(isOpen: boolean) => {
           setDialogType(
             isOpen ? ApiKeyRowDropdownType.Rotate : ApiKeyRowDropdownType.None
@@ -73,16 +81,21 @@ export function ApiKeyMoreActions({ apiKey, token, applicationId }: Props) {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={() => setDialogType(ApiKeyRowDropdownType.Edit)}
-          >
-            Edit key
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => setDialogType(ApiKeyRowDropdownType.Rotate)}
-          >
-            Rotate key
-          </DropdownMenuItem>
+          {isApiKeyExpiring === false ? (
+            <>
+              <DropdownMenuItem
+                onClick={() => setDialogType(ApiKeyRowDropdownType.Edit)}
+              >
+                Edit key
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setDialogType(ApiKeyRowDropdownType.Rotate)}
+              >
+                Rotate key
+              </DropdownMenuItem>
+            </>
+          ) : null}
+
           <DropdownMenuItem
             onClick={() => setDialogType(ApiKeyRowDropdownType.Delete)}
           >
