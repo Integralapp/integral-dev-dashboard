@@ -98,6 +98,7 @@ export function ApiKeyMoreActions({
 
           <DropdownMenuItem
             onClick={() => setDialogType(ApiKeyRowDropdownType.Delete)}
+            className="text-red-600"
           >
             Delete key
           </DropdownMenuItem>
