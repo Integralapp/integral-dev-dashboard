@@ -43,6 +43,8 @@ export function ApiKeyMoreActions({
       <EditKeyDialog
         isOpen={dialogType === ApiKeyRowDropdownType.Edit}
         apiKey={apiKey}
+        token={token}
+        applicationId={applicationId}
         setIsEditKeyDialogOpen={(isOpen: boolean) => {
           setDialogType(
             isOpen ? ApiKeyRowDropdownType.Edit : ApiKeyRowDropdownType.None

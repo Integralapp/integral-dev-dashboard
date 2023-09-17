@@ -37,7 +37,7 @@ export const exampleRouter = createTRPCRouter({
       z.object({
         token: z.string(),
         applicationId: z.string(),
-        name: z.string(),
+        name: z.string().min(1),
       })
     )
     .output(ApiKeySchema)
@@ -111,4 +111,31 @@ export const exampleRouter = createTRPCRouter({
         return response.data as ApiKeyType;
       }
     ),
+  updateApiKeyName: publicProcedure
+    .input(
+      z.object({
+        token: z.string(),
+        applicationId: z.string(),
+        apiKey: z.string(),
+        name: z.string().min(1),
+      })
+    )
+    .output(ApiKeySchema)
+    .mutation(async ({ input: { token, applicationId, apiKey, name } }) => {
+      const response = await axios.post(
+        "http://localhost:4000/dashboard/keys/update-name",
+        {
+          apiKey,
+          name,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Integral-Application-Id": applicationId,
+          },
+        }
+      );
+
+      return response.data as ApiKeyType;
+    }),
 });
