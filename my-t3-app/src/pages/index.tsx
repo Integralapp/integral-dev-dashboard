@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Main from "~/@/components/main";
+import ApiKeyComponent from "~/@/components/api-key-component";
 import { Toaster } from "~/@/components/ui/toaster";
 
 export default function Home() {
@@ -11,7 +11,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Main />
+        <ApiKeyComponent />
         <Toaster />
       </main>
     </>
