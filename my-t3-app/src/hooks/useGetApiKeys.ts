@@ -12,7 +12,7 @@ export const ApiKeySchema = z.object({
 
 export type ApiKeyType = z.infer<typeof ApiKeySchema>;
 
-const fetchWithToken = async (
+const fetchApiKeys = async (
   url: string,
   token: string,
   applicationId: string
@@ -23,7 +23,8 @@ const fetchWithToken = async (
       "Integral-Application-Id": applicationId,
     },
   });
-  return (await response.json()) as ApiKeyType[];
+
+  return z.array(ApiKeySchema).parse(await response.json());
 };
 
 export function useGetApiKeys(
@@ -36,7 +37,7 @@ export function useGetApiKeys(
 } {
   const { data, error, isLoading } = useSWR<ApiKeyType[], Error>(
     "http://localhost:4000/dashboard/keys/list/production",
-    (url: string) => fetchWithToken(url, token, applicationId)
+    (url: string) => fetchApiKeys(url, token, applicationId)
   );
 
   return {
