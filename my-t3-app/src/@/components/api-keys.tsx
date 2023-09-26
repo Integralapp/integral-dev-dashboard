@@ -1,4 +1,3 @@
-import { api } from "~/utils/api";
 import {
   Table,
   TableBody,
@@ -16,6 +15,8 @@ import {
 } from "./ui/tooltip";
 import { useToast } from "./ui/use-toast";
 import { ApiKeyNameCell } from "./api-key-name-cell";
+import { Skeleton } from "./ui/skeleton";
+import { useGetApiKeys } from "~/hooks/useGetApiKeys";
 
 const TRUNCATED_KEY_CHAR_COUNT = 4;
 
@@ -26,10 +27,8 @@ type Props = {
 
 export default function ApiKeys({ token, applicationId }: Props) {
   const { toast } = useToast();
-  const apiKeys = api.example.apiKeys.useQuery({
-    token,
-    applicationId,
-  });
+  const { data, loading } = useGetApiKeys(token, applicationId);
+  const apiKeys = data ?? [];
 
   return (
     <div>
@@ -44,7 +43,7 @@ export default function ApiKeys({ token, applicationId }: Props) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {(apiKeys.data ?? []).map((apiKey) => {
+          {apiKeys.map((apiKey) => {
             const key = apiKey.apiKey;
             const truncatedKey =
               key.substring(0, TRUNCATED_KEY_CHAR_COUNT) +
@@ -105,7 +104,15 @@ export default function ApiKeys({ token, applicationId }: Props) {
         </TableBody>
       </Table>
 
-      {apiKeys.data && apiKeys.data.length === 0 && (
+      {loading && (
+        <div className="flex-col justify-center p-8 text-center">
+          <div className="grow flex-row">
+            <Skeleton className="h-10 w-full" />
+          </div>
+        </div>
+      )}
+
+      {apiKeys.length === 0 && !loading && (
         <div className="flex-col justify-center p-8 text-center">
           <div className="grow flex-row">
             <p className="text-sm font-bold">No API Keys</p>
