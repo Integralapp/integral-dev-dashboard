@@ -17,9 +17,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { api } from "~/utils/api";
 import { useToast } from "./ui/use-toast";
 import { Loader2 } from "lucide-react";
+import { useRotateApiKey } from "~/hooks/useRotateApiKey";
+import { mutate } from "swr";
 
 export enum ExpiresInTimes {
   Now = "now",
@@ -47,27 +48,25 @@ export function RotateKeyDialog({
   const [expiresIn, setExpiresIn] = useState<ExpiresInTimes | null>(null);
 
   const { toast } = useToast();
-  const apiContext = api.useContext();
 
-  const rotateApiKey = api.example.rotateApiKey.useMutation({
-    onSuccess: async () => {
-      await apiContext.example.apiKeys.invalidate();
+  const { loading, error, trigger } = useRotateApiKey(
+    token,
+    applicationId,
+    apiKey.apiKey,
+    expiresIn ?? ExpiresInTimes.SevenDays,
+    () => {
+      void mutate("http://localhost:4000/dashboard/keys/list/production");
       setIsRotateKeyDialogOpen(false);
       toast({
         description: "Rotated API Key!",
         duration: 1500,
       });
-    },
-  });
+    }
+  );
 
-  const handleRotate = () => {
+  const handleRotate = async () => {
     if (expiresIn != null) {
-      rotateApiKey.mutate({
-        token,
-        applicationId,
-        apiKey: apiKey.apiKey,
-        expiresIn,
-      });
+      await trigger();
     }
   };
 
@@ -110,13 +109,13 @@ export function RotateKeyDialog({
         <DialogFooter>
           <Button
             variant="secondary"
-            disabled={rotateApiKey.isLoading}
+            disabled={loading}
             onClick={() => setIsRotateKeyDialogOpen(false)}
           >
             Cancel
           </Button>
 
-          {rotateApiKey.isLoading ? (
+          {loading ? (
             <Button disabled>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Rotating...
@@ -125,7 +124,7 @@ export function RotateKeyDialog({
             <Button
               type="submit"
               disabled={expiresIn === null}
-              onClick={handleRotate}
+              onClick={() => void handleRotate()}
             >
               Rotate
             </Button>
