@@ -2,30 +2,27 @@ import useSWRMutation, { type TriggerWithoutArgs } from "swr/mutation";
 import { type Key } from "swr";
 import axios from "axios";
 
-const addApiKey = async (
+const deleteApiKey = async (
   url: string,
   token: string,
   applicationId: string,
-  name: string
+  apiKey: string
 ): Promise<void> => {
-  await axios.post(
-    url,
-    {
-      name,
+  await axios.delete(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Integral-Application-Id": applicationId,
     },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Integral-Application-Id": applicationId,
-      },
-    }
-  );
+    data: {
+      apiKey,
+    },
+  });
 };
 
-export function useAddApiKey(
+export function useDeleteApiKey(
   token: string,
   applicationId: string,
-  name: string,
+  apiKey: string,
   onSuccess: () => void
 ): {
   data: void | undefined;
@@ -34,8 +31,8 @@ export function useAddApiKey(
   trigger: TriggerWithoutArgs<void, Error, Key, never>;
 } {
   const { data, error, isMutating, trigger } = useSWRMutation<void, Error>(
-    "http://localhost:4000/dashboard/keys/create",
-    (url: string) => addApiKey(url, token, applicationId, name),
+    "http://localhost:4000/dashboard/keys/delete",
+    (url: string) => deleteApiKey(url, token, applicationId, apiKey),
     {
       onSuccess: onSuccess,
     }
