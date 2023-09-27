@@ -1,3 +1,4 @@
+import axios from "axios";
 import useSWR from "swr";
 import { z } from "zod";
 
@@ -17,14 +18,17 @@ const fetchApiKeys = async (
   token: string,
   applicationId: string
 ): Promise<ApiKeyType[]> => {
-  const response = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Integral-Application-Id": applicationId,
-    },
-  });
+  const response = await axios.get(
+    "http://localhost:4000/dashboard/keys/list/production",
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Integral-Application-Id": applicationId,
+      },
+    }
+  );
 
-  return z.array(ApiKeySchema).parse(await response.json());
+  return z.array(ApiKeySchema).parse(response.data);
 };
 
 export function useGetApiKeys(

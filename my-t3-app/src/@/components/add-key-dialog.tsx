@@ -10,9 +10,10 @@ import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 
-import { api } from "~/utils/api";
 import { Loader2 } from "lucide-react";
 import { useToast } from "./ui/use-toast";
+import { useAddApiKey } from "~/hooks/useAddApiKey";
+import { mutate } from "swr";
 
 type Props = {
   token: string;
@@ -30,21 +31,22 @@ export function AddKeyDialog({
   const { toast } = useToast();
 
   const [name, setName] = useState<string>("");
-  const apiContext = api.useContext();
-
-  const createApiKey = api.example.createApiKey.useMutation({
-    onSuccess: async () => {
-      await apiContext.example.apiKeys.invalidate();
+  const { loading, error, trigger } = useAddApiKey(
+    token,
+    applicationId,
+    name,
+    () => {
+      void mutate("http://localhost:4000/dashboard/keys/list/production");
       setIsAddKeyDialogOpen(false);
       toast({
         description: "Added API Key!",
         duration: 1500,
       });
-    },
-  });
+    }
+  );
 
-  const handleCreate = () => {
-    createApiKey.mutate({ token, applicationId, name });
+  const handleCreate = async () => {
+    await trigger();
   };
 
   return (
@@ -72,17 +74,17 @@ export function AddKeyDialog({
           <Button
             variant="secondary"
             onClick={() => setIsAddKeyDialogOpen(false)}
-            disabled={createApiKey.isLoading}
+            disabled={loading}
           >
             Cancel
           </Button>
-          {createApiKey.isLoading ? (
+          {loading ? (
             <Button disabled>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Creating...
             </Button>
           ) : (
-            <Button type="submit" onClick={handleCreate}>
+            <Button type="submit" onClick={() => void handleCreate()}>
               Create
             </Button>
           )}
