@@ -7,7 +7,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "./ui/dialog";
-import type { ApiKeyType } from "~/server/api/routers/example";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
 import {
@@ -21,6 +20,7 @@ import { useToast } from "./ui/use-toast";
 import { Loader2 } from "lucide-react";
 import { useRotateApiKey } from "~/hooks/useRotateApiKey";
 import { mutate } from "swr";
+import { type ApiKeyType } from "~/hooks/useGetApiKeys";
 
 export enum ExpiresInTimes {
   Now = "now",

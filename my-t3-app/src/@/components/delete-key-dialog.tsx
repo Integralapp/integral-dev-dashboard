@@ -1,4 +1,3 @@
-import type { ApiKeyType } from "~/server/api/routers/example";
 import {
   DialogHeader,
   DialogFooter,
@@ -13,6 +12,7 @@ import { Loader2 } from "lucide-react";
 import { useToast } from "./ui/use-toast";
 import { useDeleteApiKey } from "~/hooks/useDeleteApiKey";
 import { mutate } from "swr";
+import { type ApiKeyType } from "~/hooks/useGetApiKeys";
 
 type Props = {
   apiKey: ApiKeyType;

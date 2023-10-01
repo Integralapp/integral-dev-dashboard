@@ -1,5 +1,4 @@
 import { useState } from "react";
-import type { ApiKeyType } from "~/server/api/routers/example";
 import {
   Dialog,
   DialogContent,
@@ -11,9 +10,11 @@ import {
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
-import { api } from "~/utils/api";
 import { useToast } from "./ui/use-toast";
 import { Loader2 } from "lucide-react";
+import { type ApiKeyType } from "~/hooks/useGetApiKeys";
+import { useUpdateApiKey } from "~/hooks/useUpdateApiKey";
+import { mutate } from "swr";
 
 type Props = {
   apiKey: ApiKeyType;
@@ -33,26 +34,25 @@ export function EditKeyDialog({
   const [name, setName] = useState<string>(apiKey.name ?? "");
 
   const { toast } = useToast();
-  const apiContext = api.useContext();
-
-  const updateApiKeyName = api.example.updateApiKeyName.useMutation({
-    onSuccess: async () => {
-      await apiContext.example.apiKeys.invalidate();
+  const { loading, error, trigger } = useUpdateApiKey(
+    token,
+    applicationId,
+    apiKey.apiKey,
+    name,
+    () => {
+      void mutate("http://localhost:4000/dashboard/keys/list/production");
       setIsEditKeyDialogOpen(false);
       toast({
         description: "Updated API Key!",
         duration: 1500,
       });
-    },
-  });
+    }
+  );
 
-  const handleUpdate = () => {
-    updateApiKeyName.mutate({
-      token,
-      applicationId,
-      apiKey: apiKey.apiKey,
-      name,
-    });
+  const handleUpdate = async () => {
+    if (name.length != 0) {
+      await trigger();
+    }
   };
 
   return (
@@ -82,13 +82,13 @@ export function EditKeyDialog({
         <DialogFooter>
           <Button
             variant="secondary"
-            disabled={updateApiKeyName.isLoading}
+            disabled={loading}
             onClick={() => setIsEditKeyDialogOpen(false)}
           >
             Cancel
           </Button>
 
-          {updateApiKeyName.isLoading ? (
+          {loading ? (
             <Button disabled>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Updating...
@@ -97,7 +97,7 @@ export function EditKeyDialog({
             <Button
               type="submit"
               disabled={name.length === 0}
-              onClick={handleUpdate}
+              onClick={() => void handleUpdate()}
             >
               Save
             </Button>
