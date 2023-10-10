@@ -9,10 +9,10 @@ import {
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { MoreHorizontal } from "lucide-react";
-import type { ApiKeyType } from "~/server/api/routers/example";
 import { EditKeyDialog } from "./edit-key-dialog";
 import { DeleteKeyDialog } from "./delete-key-dialog";
 import { RotateKeyDialog } from "./rotate-key-dialog";
+import { type ApiKeyType } from "~/hooks/useGetApiKeys";
 
 enum ApiKeyRowDropdownType {
   None,
