@@ -1,0 +1,34 @@
+name: Publish NPM Package
+
+on:
+  push:
+    branches:
+      - main # Change this to your main branch name
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+
+      - name: Go into directory
+        run: cd my-t3-app
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the package
+        run: npm run build # Replace with your build command if needed
+
+      - name: Publish to npm
+        run: |
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
